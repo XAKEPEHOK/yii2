@@ -210,13 +210,16 @@ class Sort extends Object
         $attributeOrders = $this->getAttributeOrders($recalculate);
         $orders = [];
         foreach ($attributeOrders as $attribute => $direction) {
-            $definition = $this->attributes[$attribute];
-            $columns = $definition[$direction === SORT_ASC ? 'asc' : 'desc'];
-            foreach ($columns as $name => $dir) {
-                $orders[$name] = $dir;
+            if (isset($this->attributes[$attribute])) {
+                $definition = $this->attributes[$attribute];
+                $columns = $definition[$direction === SORT_ASC ? 'asc' : 'desc'];
+                foreach ($columns as $name => $dir) {
+                    $orders[$name] = $dir;
+                }
+            } else {
+                $orders[] = $direction;
             }
         }
-
         return $orders;
     }
 
